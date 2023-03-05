@@ -1,0 +1,158 @@
+{
+  "Actions": [
+    {
+      "Icon": "Images/icon",
+      "Name": "Display Score",
+      "States": [
+        {
+          "Image": "Images/neutralPluginIcon",
+          "TitleAlignment": "middle",
+          "FontSize": "12"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "Display the score of a team",
+      "UUID": "ca.jaggernaut.scoreboard.displayscoreaction",
+      "PropertyInspectorPath": "PropertyInspector/TeamDependantActionPI.html"
+    },
+    {
+      "Icon": "Images/icon",
+      "Name": "Update Score",
+      "States": [
+        {
+          "Image": "Images/neutralPluginIcon",
+          "TitleAlignment": "middle",
+          "FontSize": "12"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "Add or subtract to the score",
+      "UUID": "ca.jaggernaut.scoreboard.changescoreaction",
+      "PropertyInspectorPath": "PropertyInspector/ChangeScoreAction.html"
+    },
+    {
+      "Icon": "Images/icon",
+      "Name": "Display/Toggle Bracket",
+      "States": [
+        {
+          "Image": "Images/neutralPluginIcon",
+          "TitleAlignment": "middle",
+          "FontSize": "12"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "Shows the bracket of the player. Press to toggle",
+      "UUID": "ca.jaggernaut.scoreboard.bracketaction",
+      "PropertyInspectorPath": "PropertyInspector/TeamDependantActionPI.html"
+    },
+    {
+      "Icon": "Images/icon",
+      "Name": "Display Prediction Status",
+      "States": [
+        {
+          "Image": "Images/neutralPluginIcon",
+          "TitleAlignment": "middle",
+          "FontSize": "12"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "Shows the current status of twitch prediction",
+      "UUID": "ca.jaggernaut.scoreboard.predictionaction",
+      "PropertyInspectorPath": "PropertyInspector/PluginActionPI.html"
+    },
+    {
+      "Icon": "Images/icon",
+      "Name": "Create/Lock/End Prediction",
+      "States": [
+        {
+          "Image": "Images/neutralPluginIcon",
+          "TitleAlignment": "middle",
+          "FontSize": "10"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "Starts/Locks/Ends a prediction",
+      "UUID": "ca.jaggernaut.scoreboard.progresspredictionaction",
+      "PropertyInspectorPath": "PropertyInspector/PluginActionPI.html"
+    },
+    {
+      "Icon": "Images/icon",
+      "Name": "Cancel Prediction",
+      "States": [
+        {
+          "Image": "Images/neutralPluginIcon",
+          "TitleAlignment": "middle",
+          "FontSize": "10"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "Cancels the current prediction",
+      "UUID": "ca.jaggernaut.scoreboard.cancelpredictionaction",
+      "PropertyInspectorPath": "PropertyInspector/PluginActionPI.html"
+    },
+    {
+      "Icon": "Images/icon",
+      "Name": "Toggle Scoreboard Visibility",
+      "States": [
+        {
+          "Image": "Images/neutralPluginIcon",
+          "TitleAlignment": "middle",
+          "FontSize": "12"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "Shows if the scorebord is shown or hidden. Press to toggle",
+      "UUID": "ca.jaggernaut.scoreboard.hidescoreboardaction",
+      "PropertyInspectorPath": "PropertyInspector/PluginActionPI.html"
+    },
+    {
+      "Icon": "Images/icon",
+      "Name": "Reset score",
+      "States": [
+        {
+          "Image": "Images/neutralPluginIcon",
+          "TitleAlignment": "middle",
+          "FontSize": "12"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "Reset both players scores to 0",
+      "UUID": "ca.jaggernaut.scoreboard.resetscoreaction",
+      "PropertyInspectorPath": "PropertyInspector/PluginActionPI.html"
+    },
+    {
+      "Icon": "Images/icon",
+      "Name": "Swap Players",
+      "States": [
+        {
+          "Image": "Images/neutralPluginIcon",
+          "TitleAlignment": "middle",
+          "FontSize": "12"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "Swap players postion left/right",
+      "UUID": "ca.jaggernaut.scoreboard.swapteamsaction",
+      "PropertyInspectorPath": "PropertyInspector/PluginActionPI.html"
+    }
+  ],
+  "Author": "Jaggernaut",
+  "Name": "StreamDeck-Scoreboard",
+  "Description": "A plugin to control the nodecg-melee-scoreboard",
+  "Icon": "Images/pluginIcon",
+  "URL": "https://github.com/Jaggernaut555",
+  "Version": "1.0",
+  "CodePath": "ca.jaggernaut.scoreboard",
+  "Category": "Melee-Scoreboard",
+  "CategoryIcon": "Images/categoryIcon",
+  "OS": [
+    {
+      "Platform": "windows",
+      "MinimumVersion": "10"
+    }
+  ],
+  "SDKVersion": 2,
+  "Software": {
+    "MinimumVersion": "4.9"
+  }
+}
