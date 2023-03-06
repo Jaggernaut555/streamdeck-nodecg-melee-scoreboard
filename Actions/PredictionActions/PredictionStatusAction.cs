@@ -15,102 +15,29 @@ using System.Windows.Interop;
 namespace StreamDeck_Scoreboard
 {
     [PluginActionId("ca.jaggernaut.scoreboard.predictionaction")]
-    public class PredictionStatusAction: KeypadBase
+    public class PredictionStatusAction : NoTeamAction<BaseSettings>
     {
-        private class PluginSettings
-        {
-            public static PluginSettings CreateDefaultSettings()
-            {
-                PluginSettings instance = new PluginSettings();
-                instance.HTTPAddress = "localhost:9090";
-                instance.WebsocketAddress = "localhost:9091";
-                return instance;
-            }
-
-
-            [JsonProperty(PropertyName = "httpAddress")]
-            public string HTTPAddress { get; set; }
-
-            [JsonProperty(PropertyName = "websocketAddress")]
-            public string WebsocketAddress { get; set; }
-
-        }
-
         private class PredictionMessage
         {
             [JsonProperty(PropertyName = "PredictionStatus")]
             public string PredictionStatus { get; set; }
         }
 
-        private SocketIO WsClient { get; set; }
+        protected override bool RequiresWebsocket { get; } = true;
+        protected override bool RequiresHttpClient { get; } = false;
 
-        private string CurrentWebsocketUrl { get; set; }
+        public PredictionStatusAction(SDConnection connection, InitialPayload payload) : base(connection, payload) { }
 
-        #region Private Members
+        #region Protected Methods
 
-        private PluginSettings settings;
-
-        #endregion
-        public PredictionStatusAction(SDConnection connection, InitialPayload payload) : base(connection, payload)
+        protected override void OnWebsocketConnection()
         {
-            if (payload.Settings == null || payload.Settings.Count == 0)
-            {
-                this.settings = PluginSettings.CreateDefaultSettings();
-                SaveSettings();
-            }
-            else
-            {
-                this.settings = payload.Settings.ToObject<PluginSettings>();
-            }
-            InitializeWebsocket();
+            this.WsClient.EmitAsync("join", "Prediction").Wait();
+            this.WsClient.EmitAsync("Prediction");
         }
 
-        public override async void Dispose() {
-            if (this.WsClient != null)
-            {
-                await this.WsClient.DisconnectAsync();
-                this.WsClient.Dispose();
-            }
-        }
-
-        public override void KeyPressed(KeyPayload payload) { }
-
-        public override void KeyReleased(KeyPayload payload) { }
-
-        public override void OnTick() { }
-
-        public override void ReceivedSettings(ReceivedSettingsPayload payload)
+        protected override void InitializeWebsocket()
         {
-            Tools.AutoPopulateSettings(settings, payload.Settings);
-            SaveSettings();
-            InitializeWebsocket();
-        }
-
-        public override void ReceivedGlobalSettings(ReceivedGlobalSettingsPayload payload) { }
-
-        #region Private Methods
-
-        private Task SaveSettings()
-        {
-            return Connection.SetSettingsAsync(JObject.FromObject(settings));
-        }
-
-        private async void InitializeWebsocket()
-        {
-            if (this.settings.WebsocketAddress == null || (this.WsClient != null && this.CurrentWebsocketUrl == this.settings.WebsocketAddress))
-            {
-                return;
-            }
-
-            if (this.WsClient != null)
-            {
-                await this.WsClient.DisconnectAsync();
-            }
-
-            var url = new Uri($"ws://{this.settings.WebsocketAddress}");
-
-            this.WsClient = new SocketIO(url);
-
             this.WsClient.On("PredictionUpdate", async response =>
             {
                 var msg = response.GetValue<PredictionMessage>();
@@ -119,15 +46,6 @@ namespace StreamDeck_Scoreboard
                     await Connection.SetTitleAsync($"{msg.PredictionStatus}");
                 }
             });
-
-            this.WsClient.OnConnected += async (sender, e) =>
-            {
-                await this.WsClient.EmitAsync("join", "Prediction");
-                await this.WsClient.EmitAsync("Prediction");
-            };
-
-            await this.WsClient.ConnectAsync();
-            this.CurrentWebsocketUrl = this.settings.WebsocketAddress;
         }
 
         #endregion

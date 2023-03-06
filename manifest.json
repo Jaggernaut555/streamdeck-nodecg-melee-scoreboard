@@ -141,7 +141,7 @@
   "Description": "A plugin to control the nodecg-melee-scoreboard",
   "Icon": "Images/pluginIcon",
   "URL": "https://github.com/Jaggernaut555",
-  "Version": "1.0",
+  "Version": "1.0.1",
   "CodePath": "ca.jaggernaut.scoreboard",
   "Category": "Melee-Scoreboard",
   "CategoryIcon": "Images/categoryIcon",
