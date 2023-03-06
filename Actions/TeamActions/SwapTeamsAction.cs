@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace StreamDeck_Scoreboard
 {
     [PluginActionId("ca.jaggernaut.scoreboard.swapteamsaction")]
-    public class SwapTeamsAction : NoTeamAction<BaseSettings>
+    public class SwapTeamsAction : BaseAction<BaseSettings>
     {
         protected override bool RequiresWebsocket { get; } = false;
         protected override bool RequiresHttpClient { get; } = true;

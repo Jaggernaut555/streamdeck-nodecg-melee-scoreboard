@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace StreamDeck_Scoreboard
 {
     [PluginActionId("ca.jaggernaut.scoreboard.progresspredictionaction")]
-    public class ProgressPredictionAction : NoTeamAction<BaseSettings>
+    public class ProgressPredictionAction : BaseAction<BaseSettings>
     {
         private class PredictionMessage
         {

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace StreamDeck_Scoreboard
 {
     [PluginActionId("ca.jaggernaut.scoreboard.cancelpredictionaction")]
-    public class CancelPredictionAction : NoTeamAction<BaseSettings>
+    public class CancelPredictionAction : BaseAction<BaseSettings>
     {
         protected override bool RequiresWebsocket { get; } = false;
         protected override bool RequiresHttpClient { get; } = true;

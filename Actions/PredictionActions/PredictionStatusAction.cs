@@ -15,7 +15,7 @@ using System.Windows.Interop;
 namespace StreamDeck_Scoreboard
 {
     [PluginActionId("ca.jaggernaut.scoreboard.predictionaction")]
-    public class PredictionStatusAction : NoTeamAction<BaseSettings>
+    public class PredictionStatusAction : BaseAction<BaseSettings>
     {
         private class PredictionMessage
         {

@@ -17,7 +17,7 @@ using System.Windows.Interop;
 
 namespace StreamDeck_Scoreboard
 {
-    public abstract class NoTeamAction<T> : KeypadBase where T : BaseSettings, new()
+    public abstract class BaseAction<T> : KeypadBase where T : BaseSettings, new()
     {
         protected SocketIO WsClient { get; set; }
 
@@ -25,14 +25,13 @@ namespace StreamDeck_Scoreboard
 
         protected abstract bool RequiresWebsocket { get; }
         protected abstract bool RequiresHttpClient { get; }
+        protected T Settings { get; set; }
 
         #region Private Members
         private string CurrentWebsocketUrl { get; set; }
-
-        protected T Settings { get; set; }
-
         #endregion
-        public NoTeamAction(SDConnection connection, InitialPayload payload) : base(connection, payload)
+
+        public BaseAction(SDConnection connection, InitialPayload payload) : base(connection, payload)
         {
             if (payload.Settings == null || payload.Settings.Count == 0)
             {
@@ -151,7 +150,6 @@ namespace StreamDeck_Scoreboard
         protected virtual void OnWebsocketConnection() { }
 
         protected virtual void InitializeWebsocket() { }
-        #endregion
 
         protected virtual void UpdateConnectedStatus()
         {
@@ -173,5 +171,6 @@ namespace StreamDeck_Scoreboard
         }
 
         protected virtual void UpdateInfo() { }
+        #endregion
     }
 }

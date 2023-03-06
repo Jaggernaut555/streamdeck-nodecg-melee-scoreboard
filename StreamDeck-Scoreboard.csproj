@@ -111,7 +111,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actions\BaseActions\TeamAction.cs" />
-    <Compile Include="Actions\BaseActions\NoTeamAction.cs" />
+    <Compile Include="Actions\BaseActions\BaseAction.cs" />
     <Compile Include="Actions\BaseActions\TeamActionSettings.cs" />
     <Compile Include="Actions\HideScoreboardAction.cs" />
     <Compile Include="Actions\BaseActions\BaseSettings.cs" />

@@ -18,7 +18,7 @@ using System.Windows.Interop;
 namespace StreamDeck_Scoreboard
 {
     [PluginActionId("ca.jaggernaut.scoreboard.hidescoreboardaction")]
-    public class HideScoreboardAction : NoTeamAction<BaseSettings>
+    public class HideScoreboardAction : BaseAction<BaseSettings>
     {
         private class HideScoreboradMessage
         {

@@ -5,17 +5,16 @@ using System.Runtime;
 
 namespace StreamDeck_Scoreboard
 {
-    abstract class TeamAction<T> : NoTeamAction<T> where T : TeamActionSettings, new()
+    abstract class TeamAction<T> : BaseAction<T> where T : TeamActionSettings, new()
     {
         public TeamAction(SDConnection connection, InitialPayload payload) : base(connection, payload) { }
 
         public override void ReceivedSettings(ReceivedSettingsPayload payload)
         {
             var oldTeamIndex = this.Settings.TeamIndex;
-            Tools.AutoPopulateSettings(Settings, payload.Settings);
-            SaveSettings();
+            
+            base.ReceivedSettings(payload);
 
-            InitializeWebsocket();
             if (this.Settings.TeamIndex != oldTeamIndex)
             {
                 this.UpdateInfo();

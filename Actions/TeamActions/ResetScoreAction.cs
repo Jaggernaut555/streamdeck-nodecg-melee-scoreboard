@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace StreamDeck_Scoreboard
 {
     [PluginActionId("ca.jaggernaut.scoreboard.resetscoreaction")]
-    public class ResetScoreAction : NoTeamAction<BaseSettings>
+    public class ResetScoreAction : BaseAction<BaseSettings>
     {
         protected override bool RequiresWebsocket { get; } = false;
         protected override bool RequiresHttpClient { get; } = true;
