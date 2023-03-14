@@ -35,6 +35,7 @@ namespace StreamDeck_Scoreboard
         public override void KeyPressed(KeyPayload payload)
         {
             var request = new RestRequest("/api/v1/scoreboard");
+            request.AddParameter("operation", "toggle");
             try
             {
                 this.RestClient.Post(request);
