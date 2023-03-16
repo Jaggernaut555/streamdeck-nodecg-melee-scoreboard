@@ -45,9 +45,6 @@
     <Reference Include="NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>packages\NLog.5.1.2\lib\net46\NLog.dll</HintPath>
     </Reference>
-    <Reference Include="RestSharp, Version=108.0.3.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
-      <HintPath>packages\RestSharp.108.0.3\lib\netstandard2.0\RestSharp.dll</HintPath>
-    </Reference>
     <Reference Include="SocketIOClient, Version=3.0.8.0, Culture=neutral, PublicKeyToken=c9a3629195a82104, processorArchitecture=MSIL">
       <HintPath>packages\SocketIOClient.3.0.8\lib\net462\SocketIOClient.dll</HintPath>
     </Reference>

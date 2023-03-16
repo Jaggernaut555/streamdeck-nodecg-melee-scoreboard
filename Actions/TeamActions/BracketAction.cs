@@ -1,7 +1,6 @@
 ﻿using BarRaider.SdTools;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using RestSharp;
 using SocketIOClient;
 using StreamDeck_Scoreboard.Actions.BaseActions;
 using System;
@@ -13,6 +12,7 @@ using System.Net.Http;
 using System.Net.WebSockets;
 using System.Reactive.Linq;
 using System.Text;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using System.Windows.Interop;
 
@@ -22,7 +22,6 @@ namespace StreamDeck_Scoreboard
     class BracketAction : TeamAction<TeamActionSettings>
     {
         protected override bool RequiresWebsocket { get; } = true;
-        protected override bool RequiresHttpClient { get; } = true;
 
         private class BracketMessage
         {
@@ -38,15 +37,20 @@ namespace StreamDeck_Scoreboard
 
         public override void KeyPressed(KeyPayload payload)
         {
-            var request = new RestRequest("/api/v1/bracket");
-            request.AddParameter("bracket", "toggle");
-            request.AddParameter("team", this.Settings.TeamIndex);
             try
             {
-                this.RestClient.Post(request);
+                dynamic data = new
+                {
+                    operation = "toggle",
+                    team = this.Settings.TeamIndex,
+                    type = "bracket"
+                };
+
+                this.WsClient.EmitAsync("Update", data).Wait();
             }
-            catch (HttpRequestException)
+            catch (Exception e)
             {
+                Logger.Instance.LogMessage(TracingLevel.ERROR, e.Message);
                 Connection.ShowAlert();
             }
         }

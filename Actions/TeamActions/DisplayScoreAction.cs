@@ -20,7 +20,6 @@ namespace StreamDeck_Scoreboard
     class DisplayScoreAction : TeamAction<TeamActionSettings>
     {
         protected override bool RequiresWebsocket { get; } = true;
-        protected override bool RequiresHttpClient { get; } = false;
 
         private class ScoreMessage
         {

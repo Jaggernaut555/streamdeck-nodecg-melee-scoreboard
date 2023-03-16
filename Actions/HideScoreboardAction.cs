@@ -1,7 +1,6 @@
 ﻿using BarRaider.SdTools;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using RestSharp;
 using SocketIOClient;
 using System;
 using System.Collections.Generic;
@@ -28,20 +27,24 @@ namespace StreamDeck_Scoreboard
 
         protected override bool RequiresWebsocket { get; } = true;
 
-        protected override bool RequiresHttpClient { get; } = true;
 
         public HideScoreboardAction(SDConnection connection, InitialPayload payload) : base(connection, payload) { }
 
         public override void KeyPressed(KeyPayload payload)
         {
-            var request = new RestRequest("/api/v1/scoreboard");
-            request.AddParameter("operation", "toggle");
             try
             {
-                this.RestClient.Post(request);
+                dynamic data = new
+                {
+                    operation = "toggle",
+                    type = "hideScoreboard"
+                };
+
+                this.WsClient.EmitAsync("Update", data).Wait();
             }
-            catch (HttpRequestException)
+            catch (Exception e)
             {
+                Logger.Instance.LogMessage(TracingLevel.ERROR, e.Message);
                 Connection.ShowAlert();
             }
         }

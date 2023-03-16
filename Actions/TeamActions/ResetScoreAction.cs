@@ -1,7 +1,6 @@
 ﻿using BarRaider.SdTools;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using RestSharp;
 using SocketIOClient;
 using System;
 using System.Net.Http;
@@ -13,8 +12,6 @@ namespace StreamDeck_Scoreboard
     public class ResetScoreAction : BaseAction<BaseSettings>
     {
         protected override bool RequiresWebsocket { get; } = false;
-        protected override bool RequiresHttpClient { get; } = true;
-
 
         public ResetScoreAction(SDConnection connection, InitialPayload payload) : base(connection, payload)
         {
@@ -23,14 +20,29 @@ namespace StreamDeck_Scoreboard
 
         public override void KeyPressed(KeyPayload payload)
         {
-            var request = new RestRequest("/api/v1/reset");
             try
             {
-                this.RestClient.Post(request);
+                dynamic data1 = new
+                {
+                    operation = "reset",
+                    team = 0,
+                    type = "score"
+                };
+
+                dynamic data2 = new
+                {
+                    operation = "reset",
+                    team = 1,
+                    type = "score"
+                };
+
+                this.WsClient.EmitAsync("Update", data1).Wait();
+                this.WsClient.EmitAsync("Update", data2).Wait();
                 Connection.ShowOk();
             }
-            catch (HttpRequestException)
+            catch (Exception e)
             {
+                Logger.Instance.LogMessage(TracingLevel.ERROR, e.Message);
                 Connection.ShowAlert();
             }
         }

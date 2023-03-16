@@ -1,7 +1,6 @@
 ﻿using BarRaider.SdTools;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using RestSharp;
 using SocketIOClient;
 using System;
 using System.Net.Http;
@@ -19,20 +18,25 @@ namespace StreamDeck_Scoreboard
         }
 
         protected override bool RequiresWebsocket { get; } = true;
-        protected override bool RequiresHttpClient { get; } = true;
 
         public ProgressPredictionAction(SDConnection connection, InitialPayload payload) : base(connection, payload) { }
 
         public override void KeyPressed(KeyPayload payload)
         {
-            var request = new RestRequest("/api/v1/prediction");
-            request.AddParameter("operation", "progress");
             try
             {
-                this.RestClient.Post(request);
+                dynamic data = new
+                {
+                    operation = "progress",
+                    type = "prediction"
+                };
+
+                this.WsClient.EmitAsync("Update", data).Wait();
+                Connection.ShowOk();
             }
-            catch (HttpRequestException)
+            catch (Exception e)
             {
+                Logger.Instance.LogMessage(TracingLevel.ERROR, e.Message);
                 Connection.ShowAlert();
             }
         }

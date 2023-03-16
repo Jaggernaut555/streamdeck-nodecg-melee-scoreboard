@@ -24,7 +24,6 @@ namespace StreamDeck_Scoreboard
         }
 
         protected override bool RequiresWebsocket { get; } = true;
-        protected override bool RequiresHttpClient { get; } = false;
 
         public PredictionStatusAction(SDConnection connection, InitialPayload payload) : base(connection, payload) { }
 

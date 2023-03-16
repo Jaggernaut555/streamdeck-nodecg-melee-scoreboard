@@ -1,7 +1,6 @@
 ﻿using BarRaider.SdTools;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using RestSharp;
 using SocketIOClient;
 using System;
 using System.Net.Http;
@@ -13,8 +12,6 @@ namespace StreamDeck_Scoreboard
     public class SwapTeamsAction : BaseAction<BaseSettings>
     {
         protected override bool RequiresWebsocket { get; } = false;
-        protected override bool RequiresHttpClient { get; } = true;
-
 
         public SwapTeamsAction(SDConnection connection, InitialPayload payload) : base(connection, payload)
         {
@@ -25,14 +22,14 @@ namespace StreamDeck_Scoreboard
 
         public override void KeyPressed(KeyPayload payload)
         {
-            var request = new RestRequest("/api/v1/swap");
             try
             {
-                this.RestClient.Post(request);
+                this.WsClient.EmitAsync("Swap").Wait();
                 Connection.ShowOk();
             }
-            catch (HttpRequestException)
+            catch (Exception e)
             {
+                Logger.Instance.LogMessage(TracingLevel.ERROR, e.Message);
                 Connection.ShowAlert();
             }
         }

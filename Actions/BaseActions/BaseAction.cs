@@ -1,7 +1,6 @@
 ﻿using BarRaider.SdTools;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using RestSharp;
 using SocketIOClient;
 using System;
 using System.Collections.Generic;
@@ -21,10 +20,7 @@ namespace StreamDeck_Scoreboard
     {
         protected SocketIO WsClient { get; set; }
 
-        protected RestClient RestClient { get; set; }
-
         protected abstract bool RequiresWebsocket { get; }
-        protected abstract bool RequiresHttpClient { get; }
         protected T Settings { get; set; }
 
         #region Private Members
@@ -42,14 +38,9 @@ namespace StreamDeck_Scoreboard
             {
                 this.Settings = payload.Settings.ToObject<T>();
             }
-            if (this.RequiresWebsocket)
-            {
-                InitializeBaseWebsocket();
-            }
-            if (this.RequiresHttpClient && !string.IsNullOrEmpty(this.Settings.HTTPAddress))
-            {
-                this.RestClient = new RestClient($"http://{this.Settings.HTTPAddress}");
-            }
+            
+            InitializeBaseWebsocket();
+            
             this.UpdateInfo();
         }
 
@@ -77,15 +68,6 @@ namespace StreamDeck_Scoreboard
             if (this.RequiresWebsocket)
             {
                 InitializeBaseWebsocket();
-            }
-
-            if (this.RequiresHttpClient && oldHttpAddress != this.Settings.HTTPAddress && !String.IsNullOrEmpty(this.Settings.HTTPAddress))
-            {
-                if (this.RestClient != null)
-                {
-                    this.RestClient.Dispose();
-                }
-                this.RestClient = new RestClient($"http://{this.Settings.HTTPAddress}");
             }
         }
 

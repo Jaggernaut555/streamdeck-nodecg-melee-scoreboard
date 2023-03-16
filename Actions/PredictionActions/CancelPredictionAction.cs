@@ -1,7 +1,6 @@
 ﻿using BarRaider.SdTools;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using RestSharp;
 using SocketIOClient;
 using System;
 using System.Net.Http;
@@ -13,7 +12,6 @@ namespace StreamDeck_Scoreboard
     public class CancelPredictionAction : BaseAction<BaseSettings>
     {
         protected override bool RequiresWebsocket { get; } = false;
-        protected override bool RequiresHttpClient { get; } = true;
 
         public CancelPredictionAction(SDConnection connection, InitialPayload payload) : base(connection, payload)
         {
@@ -22,15 +20,20 @@ namespace StreamDeck_Scoreboard
 
         public override void KeyPressed(KeyPayload payload)
         {
-            var request = new RestRequest("/api/v1/prediction");
-            request.AddParameter("operation", "cancel");
             try
             {
-                this.RestClient.Post(request);
+                dynamic data = new
+                {
+                    operation = "cancel",
+                    type = "prediction"
+                };
+
+                this.WsClient.EmitAsync("Update", data).Wait();
                 Connection.ShowOk();
             }
-            catch (HttpRequestException)
+            catch (Exception e)
             {
+                Logger.Instance.LogMessage(TracingLevel.ERROR, e.Message);
                 Connection.ShowAlert();
             }
         }

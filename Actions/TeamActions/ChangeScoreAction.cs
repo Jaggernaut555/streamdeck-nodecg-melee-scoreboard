@@ -1,7 +1,6 @@
 ﻿using BarRaider.SdTools;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using RestSharp;
 using SocketIOClient;
 using StreamDeck_Scoreboard.Actions.BaseActions;
 using System;
@@ -33,22 +32,26 @@ namespace StreamDeck_Scoreboard
     class ChangeScoreAction : TeamAction<ChangeScoreSettings>
     {
         protected override bool RequiresWebsocket { get; } = false;
-        protected override bool RequiresHttpClient { get; } = true;
 
         public ChangeScoreAction(SDConnection connection, InitialPayload payload) : base(connection, payload) { }
 
         public override void KeyPressed(KeyPayload payload)
         {
-            var request = new RestRequest("/api/v1/score");
-            request.AddParameter("operation", this.Settings.Operation);
-            request.AddParameter("team", this.Settings.TeamIndex);
             try
             {
-                this.RestClient.Post(request);
+                dynamic data = new
+                {
+                    operation = this.Settings.Operation,
+                    team = this.Settings.TeamIndex,
+                    type = "score"
+                };
+
+                this.WsClient.EmitAsync("Update", data).Wait();
                 Connection.ShowOk();
             }
-            catch (HttpRequestException)
+            catch (Exception e)
             {
+                Logger.Instance.LogMessage(TracingLevel.ERROR, e.Message);
                 Connection.ShowAlert();
             }
         }
